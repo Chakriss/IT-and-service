@@ -1,0 +1,60 @@
+@page "/Product"
+
+@using MySql.Data;
+@using MySql.Data.MySqlClient;
+@using System.Data;
+
+@using Data;
+
+@inject Database DBConnect
+
+<div class="Container-fluid">
+
+    <div class="d-flex flex-raw">
+
+        <table class="table table-striped table-light">
+        <thead>
+            <tr>
+             <th scope="col">prod_id</th>
+             <th scope="col">prod_name</th>  
+             <th scope="col">price</th>  
+             <th scope="col">amount</th>         
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in dtProduct.Rows)
+            {
+                string prod_id = row["prod_id"].ToString();
+                string prod_name = row["prod_name"].ToString();
+                string price = row["price"].ToString();
+                string amount = row["amount"].ToString();
+
+                <tr>
+                    <th scope="row">@prod_id</th>
+                    <th>@prod_name</th>
+                    <th>@price</th>
+                    <th>@amount</th>
+                </tr>
+            }
+        </tbody>
+        </table>        
+    </div>
+</div>
+
+@code {
+
+        DataTable dtProduct = new DataTable();
+
+        protected override async Task OnInitializedAsync()
+        {
+            await SomeStartupTask();
+            dtProduct = DBConnect.MySQLConnection_DatatableProduct();
+        }
+
+        Task SomeStartupTask()
+        {
+            //// Do some task based work
+            return Task.CompletedTask;
+        }
+
+}

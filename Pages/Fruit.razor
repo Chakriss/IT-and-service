@@ -1,0 +1,60 @@
+@page "/Fruit"
+
+@using MySql.Data;
+@using MySql.Data.MySqlClient;
+@using System.Data;
+
+@using Data;
+
+@inject Database DBConnect
+
+<div class="Container-fluid">
+
+    <div class="d-flex flex-raw">
+
+        <table class="table table-striped table-light">
+        <thead>
+            <tr>
+             <th scope="col">fruit_id</th>
+             <th scope="col">fruit_name</th>  
+             <th scope="col">fruit_price</th>  
+             <th scope="col">fruit_amount</th>         
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in dtFruit.Rows)
+            {
+                string fruit_id = row["fruit_id"].ToString();
+                string fruit_name = row["fruit_name"].ToString();
+                string fruit_price = row["fruit_price"].ToString();
+                string fruit_amount = row["fruit_amount"].ToString();
+
+                <tr>
+                    <th scope="row">@fruit_id</th>
+                    <th>@fruit_name</th>
+                    <th>@fruit_price</th>
+                    <th>@fruit_amount</th>
+                </tr>
+            }
+        </tbody>
+        </table>        
+    </div>
+</div>
+
+@code {
+
+        DataTable dtFruit = new DataTable();
+
+        protected override async Task OnInitializedAsync()
+        {
+            await SomeStartupTask();
+            dtFruit = DBConnect.MySQLConnection_DatatableFruit();
+        }
+
+        Task SomeStartupTask()
+        {
+            //// Do some task based work
+            return Task.CompletedTask;
+        }
+
+}
